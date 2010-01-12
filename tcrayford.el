@@ -1,5 +1,5 @@
 (add-to-list 'load-path (expand-file-name  "~/.emacs.d/tcrayford/"))
-(require 'current-buffer-tweaks)
+
 (require 'defuns)
 ;; TODO write some ido stuff using defunkt's ido
 ;; Maybe for university stuff?
@@ -7,7 +7,10 @@
 ;; TODO write an 'insert' todo function that knows about a language's
 ;; comment symbol
 ;; TODO, todo function for a directory
+(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/vendor")
 
+(require 'current-buffer-tweaks)
 (require 'bindings)
 (require 'editing)
 (require 'theme)

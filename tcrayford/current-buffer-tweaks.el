@@ -10,6 +10,7 @@
                (rename-buffer new-name)
                (set-visited-file-name new-name)
                (set-buffer-modified-p nil)))))) ;;
+
 ;; Never understood why Emacs doesn't have this function, either.
 ;;
 
@@ -29,14 +30,18 @@
              (set-visited-file-name newname)
              (set-buffer-modified-p nil) 	t))))
 
-
-;;TODO this doesn't work
-(defun path-to-clipboard ()
-  "Copy the current file's path to the clipboard.
-  If the current buffer has no file, copy the buffer's default directory."
+(defun delete-this-file ()
   (interactive)
-  (let ((path (expand-file-name (or (buffer-file-name) default-directory))))
-    (set-clipboard-contents-from-string path)
-    (message "%s" path)))
+  (or (buffer-file-name) (error "no file is currently being edited"))
+  (when (yes-or-no-p "Really delete this file?")
+    (delete-file (buffer-file-name))
+    (kill-this-buffer)))
+
+(defun count-words (&optional begin end)
+  "count words between BEGIN and END (region); if no region defined, count words in buffer"
+  (interactive "r")
+  (let ((b (if mark-active begin (point-min)))
+      (e (if mark-active end (point-max))))
+    (message "Word count: %s" (how-many "\\w+" b e))))
 
 (provide 'current-buffer-tweaks)

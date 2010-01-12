@@ -153,4 +153,39 @@
     (kill-buffer "*Help*")
     (kill-buffer "*Apropos*")))
 
+(defun hallway-run-tests ()
+  (interactive)
+  (let ((test-buffer (find-buffer-visiting (format "%stest/%s-test.clj"
+                                                   (locate-dominating-file buffer-file-name "src/")
+                                                   (file-name-nondirectory (file-name-sans-extension buffer-file-name))))))
+    (save-buffer)
+        (let ((output  (with-current-buffer test-buffer
+                         (clojure-test-run-tests))))
+          output
+;          (sit-for 1)
+ ;         (if
+  ;            (string-match ".*0 failures.*" output)
+   ;           (message output)
+        ;  (switch-to-buffer test-buffer))
+          )))
+
+(defun my-kill-minimap ()
+  (interactive)
+  (minimap-kill)
+  (balance-windows))
+
+(defun vendor (library)
+  (let* ((file (symbol-name library))
+         (normal (concat "~/.emacs.d/vendor/" file))
+         (suffix (concat normal ".el")))
+    (cond
+     ((file-directory-p normal)
+      (add-to-list 'load-path normal)
+      (require library))
+     ((file-directory-p suffix)
+      (add-to-list 'load-path suffix)
+      (require library))
+     ((file-exists-p suffix)
+      (require library)))))
+
 (provide 'defuns)

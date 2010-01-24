@@ -153,21 +153,73 @@
     (kill-buffer "*Help*")
     (kill-buffer "*Apropos*")))
 
+(defun hallway-test-buffer-for-imp ()
+  (interactive)
+  (or
+   (find-buffer-visiting (format "%stest/%s-test.clj"
+                                 (locate-dominating-file (buffer-file-name) "src/")
+                                 (file-name-nondirectory (file-name-sans-extension (buffer-file-name)))))
+   (find-buffer-visiting (format "%stest/%s_test.clj"
+                                 (locate-dominating-file (buffer-file-name) "src/")
+                                 (file-name-nondirectory (file-name-sans-extension (buffer-file-name)))))))
+
 (defun hallway-run-tests ()
   (interactive)
-  (let ((test-buffer (find-buffer-visiting (format "%stest/%s-test.clj"
-                                                   (locate-dominating-file buffer-file-name "src/")
-                                                   (file-name-nondirectory (file-name-sans-extension buffer-file-name))))))
-    (save-buffer)
-        (let ((output  (with-current-buffer test-buffer
-                         (clojure-test-run-tests))))
-          output
-;          (sit-for 1)
- ;         (if
-  ;            (string-match ".*0 failures.*" output)
-   ;           (message output)
-        ;  (switch-to-buffer test-buffer))
-          )))
+  (if (string-match "test" (buffer-file-name))
+      (progn
+        (save-buffer)
+        (clojure-test-run-tests))
+    (let ((test-buffer (hallway-test-buffer-for-imp)))
+      (slime-eval-buffer)
+      (save-buffer)
+      (with-current-buffer test-buffer
+        (save-buffer)
+        (clojure-test-run-tests)))))
+
+
+
+(defun hallway-run-tests-hook (output-string)
+  (interactive)
+  "foo")
+
+(defun set-face-to-one-color (face color)
+  (set-face-background face color)
+  (set-face-foreground face color))
+
+(defun flash-modeline (color)
+  (setq old-background-face (copy-face 'modeline 'old-background-face))
+  (set-face-to-one-color 'modeline color)
+  (sit-for 1)
+  (set-face-background 'mode-line (face-background old-background-face))
+  (set-face-foreground 'mode-line (face-foreground old-background-face))
+  (redraw-modeline))
+
+(defun run-current-file ()
+  "Execute or compile the current file.
+For example, if the current buffer is the file x.pl,
+then it'll call “perl x.pl” in a shell.
+The file can be php, perl, python, bash, java.
+File suffix is used to determine what program to run."
+(interactive)
+  (let (ext-map file-name file-ext prog-name cmd-str)
+    ;; get the file name
+    ;; get the program name
+    ;; run it
+    (setq ext-map
+          '(
+            ("php" . "php")
+            ("pl" . "perl")
+            ("py" . "python")
+            ("sh" . "bash")
+            ("rb" . "ruby")
+            ("java" . "javac")))
+    (setq file-name (buffer-file-name))
+    (setq file-ext (file-name-extension file-name))
+    (setq prog-name (cdr (assoc file-ext ext-map)))
+    (setq cmd-str (concat prog-name " \"" file-name "\""))
+    (shell-command cmd-str)))
+
+
 
 (defun my-kill-minimap ()
   (interactive)
@@ -187,5 +239,10 @@
       (require library))
      ((file-exists-p suffix)
       (require library)))))
+
+(defun copy-sexp ()
+  (interactive)
+  (mark-sexp)
+  (kill-ring-save (mark t) (point)))
 
 (provide 'defuns)

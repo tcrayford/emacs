@@ -7,15 +7,15 @@
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\M-W" 'kill-region)
 
-(defface hl-line '((t (:background "#181818")))
+(defface hl-line '((t (:background "#ffffff")))
   "Face to use for `hl-line-face'." :group 'hl-line)
 (setq hl-line-face 'hl-line)
+(setq hl-line-face '((t (:background "#ffffff"))))
 
-(set-face-background 'fringe "#101010")
 (global-hl-line-mode t)
 
 (set-default-font
- "-apple-inconsolata-medium-r-normal--15-*-72-72-m-150-iso10646-1")
+ "-apple-inconsolata-medium-r-normal--14-140-72-72-m-140-iso10646-1")
 
 (blink-cursor-mode t)
 (setq mac-allow-anti-aliasing t)

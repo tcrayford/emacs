@@ -45,4 +45,6 @@
      (list (line-beginning-position)
            (line-end-position)))))
 
+(defalias 'qrr 'query-replace-regexp)
+(defalias 'qr 'query-replace)
 (provide 'editing)

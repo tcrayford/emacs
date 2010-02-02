@@ -18,8 +18,7 @@
 (require 'modes)
 (require 'auto-modes)
 
-
 ;;(eshell)
 (split-window-horizontally)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-(fs)
+(ns-toggle-fullscreen)

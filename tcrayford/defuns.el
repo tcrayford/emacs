@@ -1,109 +1,3 @@
-(defun backward-kill-line (arg)
-  "Kill chars backward until encountering the end of a line."
-  (interactive "p")
-  (kill-line 0))
-
-(cond ((eq system-type 'darwin)
-      (defun fs ()
-        (interactive)
-        (set-frame-parameter nil 'fullscreen
-                             (if (frame-parameter nil 'fullscreen)
-                                 nil
-                               'fullboth))))
-
-      ((or (eq system-type 'gnu/linux)
-          (eq system-type 'linux))
-      (defun fs ()
-        (interactive)
-        ;; TODO: this only works for X. patches welcome for other OSes.
-        (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-                               '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
-        (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-                               '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))))
-
-      ((eq system-type 'windows)
-      ;;TODO put the win32 thing in here
-      (defun fs()
-        (interactive)
-        "Toggle fullscreen display of current frame (windows only)"
-        (cond ((w32-fullscreen-recall 'enabled)
-               (w32-fullscreen-remember 'enabled nil)
-               (w32-fullscreen-off))
-              (t
-               (w32-fullscreen-remember 'enabled t)
-               (w32-fullscreen-on)))))
-)
-
-;; ------ configuration -----
-(defvar w32-fullscreen-toggletitle-cmd
-   (concat dotfiles-dir "/w32toggletitle.exe")
-   "w32toggletitle.exe")
-
-;; ------ code -----
-(defun w32-fullscreen-maximize-frame ()
-  "Maximize the current frame (windows only)"
-  (interactive)
-  (w32-send-sys-command 61488))
-
-(defun w32-fullscreen-restore-frame ()
-  "Restore a minimized/maximized frame (windows only)"
-  (interactive)
-  (w32-send-sys-command 61728))
-
-(defun w32-fullscreen-toggle-titlebar ()
-  "Toggle display of the titlebar of frame (windows only)"
-  (interactive)
-  (call-process "H:/w32toggletitle.exe"
-		  nil nil nil
-		  (frame-parameter (selected-frame) 'window-id))
-  (sleep-for 0.2))
-
-(setq *w32-fullscreen-memtable* (make-hash-table))
-
-(defun* w32-fullscreen-recall (var &optional (frame (selected-frame)))
-  (cdr (assoc var (gethash frame *w32-fullscreen-memtable*))))
-
-(defun* w32-fullscreen-remember (var val &optional (frame (selected-frame)))
-  (let* ((varlist (gethash frame *w32-fullscreen-memtable*))
-	 (target (assoc var varlist)))
-    (cond (target
-	   (setf (cdr target) val))
-	  (t
-	   (puthash frame (cons (cons var val)
-				varlist) *w32-fullscreen-memtable*)))))
-
-
-
-(defun w32-fullscreen-on ()
-  "Enable fullscreen display of current frame (windows only)"
-  (interactive)
-  ; - remember interface settings
-  (w32-fullscreen-remember 'menu-bar-lines
-			   (frame-parameter nil 'menu-bar-lines))
-  (w32-fullscreen-remember 'tool-bar-lines
-			   (frame-parameter nil 'tool-bar-lines))
-  (w32-fullscreen-remember 'vertical-scroll-bars
-	(frame-parameter nil 'vertical-scroll-bars))
-  ; - set interface settings
-  (modify-frame-parameters (selected-frame)
-			   '((menu-bar-lines . 0) (tool-bar-lines . 0)
-			     (vertical-scroll-bars . nil)))
-  (w32-fullscreen-toggle-titlebar)
-  (w32-fullscreen-maximize-frame))
-
-(defun w32-fullscreen-off ()
-  "Disable fullscreen display of current frame (windows only)"
-  (interactive)
-  ; - restore interface settings
-  (modify-frame-parameters
-   (selected-frame)
-   `((menu-bar-lines . ,(w32-fullscreen-recall 'menu-bar-lines))
-     (tool-bar-lines . ,(w32-fullscreen-recall 'tool-bar-lines))
-     (vertical-scroll-bars . ,(w32-fullscreen-recall 'vertical-scroll-bars))))
-  (w32-fullscreen-restore-frame)
-  (w32-fullscreen-toggle-titlebar))
-
-
 (defun insert-blank-line-after-current ()
    (interactive)
    (end-of-line)
@@ -137,11 +31,9 @@
 
 (defun tcrayford-ido-find-project ()
   (interactive)
-  (find-file
-   (concat "~/Projects/" (ido-completing-read "Project: "
-                                              (directory-files "~/Projects/" nil "^[^.]")))))
+  (ido-find-file-in-dir "~/Projects/"))
 
-(defvar *uni-root* "~/Dropbox/Work/Software Engineering/")
+(defvar *uni-root* "~/Work/")
 
 (defun tcrayford-ido-find-uni ()
   (interactive)
@@ -176,56 +68,6 @@
         (save-buffer)
         (clojure-test-run-tests)))))
 
-
-
-(defun hallway-run-tests-hook (output-string)
-  (interactive)
-  "foo")
-
-(defun set-face-to-one-color (face color)
-  (set-face-background face color)
-  (set-face-foreground face color))
-
-(defun flash-modeline (color)
-  (setq old-background-face (copy-face 'modeline 'old-background-face))
-  (set-face-to-one-color 'modeline color)
-  (sit-for 1)
-  (set-face-background 'mode-line (face-background old-background-face))
-  (set-face-foreground 'mode-line (face-foreground old-background-face))
-  (redraw-modeline))
-
-(defun run-current-file ()
-  "Execute or compile the current file.
-For example, if the current buffer is the file x.pl,
-then it'll call “perl x.pl” in a shell.
-The file can be php, perl, python, bash, java.
-File suffix is used to determine what program to run."
-(interactive)
-  (let (ext-map file-name file-ext prog-name cmd-str)
-    ;; get the file name
-    ;; get the program name
-    ;; run it
-    (setq ext-map
-          '(
-            ("php" . "php")
-            ("pl" . "perl")
-            ("py" . "python")
-            ("sh" . "bash")
-            ("rb" . "ruby")
-            ("java" . "javac")))
-    (setq file-name (buffer-file-name))
-    (setq file-ext (file-name-extension file-name))
-    (setq prog-name (cdr (assoc file-ext ext-map)))
-    (setq cmd-str (concat prog-name " \"" file-name "\""))
-    (shell-command cmd-str)))
-
-
-
-(defun my-kill-minimap ()
-  (interactive)
-  (minimap-kill)
-  (balance-windows))
-
 (defun vendor (library)
   (let* ((file (symbol-name library))
          (normal (concat "~/.emacs.d/vendor/" file))
@@ -244,5 +86,67 @@ File suffix is used to determine what program to run."
   (interactive)
   (mark-sexp)
   (kill-ring-save (mark t) (point)))
+
+(defun tcrayford-duplicate-line ()
+  (interactive)
+    (beginning-of-line)
+    (copy-region-as-kill (point) (progn (end-of-line) (point)))
+    (textmate-next-line)
+    (yank)
+    (beginning-of-line)
+    (indent-according-to-mode))
+
+(defun tcrayford-backward-kill-line ()
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (kill-line))
+
+(defun defunkt-clean-slate ()
+    "Kills all buffers except *scratch*"
+    (interactive)
+    (let ((buffers (buffer-list)) (safe '("*scratch*")))
+      (while buffers
+        (when (not (member (car buffers) safe))
+          (kill-buffer (car buffers))
+          (setq buffers (cdr buffers))))))
+
+;; from http://platypope.org/blog/2007/8/5/a-compendium-of-awesomeness
+;; I-search with initial contents
+(defvar isearch-initial-string nil)
+
+(defun isearch-set-initial-string ()
+  (remove-hook 'isearch-mode-hook 'isearch-set-initial-string)
+  (setq isearch-string isearch-initial-string)
+  (isearch-search-and-update))
+
+(defun isearch-forward-at-point (&optional regexp-p no-recursive-edit)
+  "Interactive search forward for the symbol at point."
+  (interactive "P\np")
+  (if regexp-p (isearch-forward regexp-p no-recursive-edit)
+    (let* ((end (progn (skip-syntax-forward "w_") (point)))
+           (begin (progn (skip-syntax-backward "w_") (point))))
+      (if (eq begin end)
+          (isearch-forward regexp-p no-recursive-edit)
+        (setq isearch-initial-string (buffer-substring begin end))
+        (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
+        (isearch-forward regexp-p no-recursive-edit)))))
+
+(require 'thingatpt)
+
+;; TODO: this doesn't work
+(defun toggle-symbol-keyword ()
+  (interactive)
+  (let ((sym (word-at-point)))
+    (message "%s" sym)
+    (save-excursion
+      (if (string-match "^:" sym)
+         (progn
+           (backward-word)
+           (delete-char))
+       (progn
+         (backward-word)
+         (insert ":")
+         )))))
 
 (provide 'defuns)

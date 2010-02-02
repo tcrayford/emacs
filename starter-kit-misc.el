@@ -20,10 +20,10 @@
       inhibit-startup-message t
       transient-mark-mode t
       color-theme-is-global t
-      delete-by-moving-to-trash t
       shift-select-mode nil
+      mouse-yank-at-point t
+      require-final-newline t
       truncate-partial-width-windows nil
-      delete-by-moving-to-trash nil
       uniquify-buffer-name-style 'forward
       whitespace-style '(trailing lines space-before-tab
                                   indentation space-after-tab)
@@ -124,14 +124,16 @@
 ;; Platform-specific stuff
 (when (eq system-type 'darwin)
   ;; Work around a bug on OS X where system-name is FQDN
-  (setq system-name (car (split-string system-name "\\.")))
-  ;; Work around a bug where environment variables aren't set correctly
-  (require 'osx-plist)
-  (when (file-exists-p "~/.MacOSX/environment.plist")
-    (osx-plist-update-environment)))
+  (setq system-name (car (split-string system-name "\\."))))
 
 ;; make emacs use the clipboard
 (setq x-select-enable-clipboard t)
+
+;; Get around the emacswiki spam protection
+(add-hook 'oddmuse-mode-hook
+          (lambda ()
+            (unless (string-match "question" oddmuse-post)
+              (setq oddmuse-post (concat "uihnscuskc=1;" oddmuse-post)))))
 
 (provide 'starter-kit-misc)
 ;;; starter-kit-misc.el ends here

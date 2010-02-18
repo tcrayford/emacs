@@ -1,7 +1,7 @@
 (defun insert-blank-line-after-current ()
-   (interactive)
-   (end-of-line)
-   (insert "\n"))
+  (interactive)
+  (end-of-line)
+  (insert "\n"))
 
 
 ;;TODO write swap-window forwards, and swap window-backwards
@@ -89,12 +89,12 @@
 
 (defun tcrayford-duplicate-line ()
   (interactive)
-    (beginning-of-line)
-    (copy-region-as-kill (point) (progn (end-of-line) (point)))
-    (textmate-next-line)
-    (yank)
-    (beginning-of-line)
-    (indent-according-to-mode))
+  (beginning-of-line)
+  (copy-region-as-kill (point) (progn (end-of-line) (point)))
+  (textmate-next-line)
+  (yank)
+  (beginning-of-line)
+  (indent-according-to-mode))
 
 (defun tcrayford-backward-kill-line ()
   (interactive)
@@ -103,13 +103,13 @@
   (kill-line))
 
 (defun defunkt-clean-slate ()
-    "Kills all buffers except *scratch*"
-    (interactive)
-    (let ((buffers (buffer-list)) (safe '("*scratch*")))
-      (while buffers
-        (when (not (member (car buffers) safe))
-          (kill-buffer (car buffers))
-          (setq buffers (cdr buffers))))))
+  "Kills all buffers except *scratch*"
+  (interactive)
+  (let ((buffers (buffer-list)) (safe '("*scratch*")))
+    (while buffers
+      (when (not (member (car buffers) safe))
+        (kill-buffer (car buffers))
+        (setq buffers (cdr buffers))))))
 
 ;; from http://platypope.org/blog/2007/8/5/a-compendium-of-awesomeness
 ;; I-search with initial contents
@@ -137,16 +137,30 @@
 ;; TODO: this doesn't work
 (defun toggle-symbol-keyword ()
   (interactive)
-  (let ((sym (word-at-point)))
-    (message "%s" sym)
-    (save-excursion
-      (if (string-match "^:" sym)
-         (progn
-           (backward-word)
-           (delete-char))
-       (progn
-         (backward-word)
-         (insert ":")
-         )))))
+  (save-excursion
+    (backward-word)
+    (if (= (char-at-point) ":")
+        (delete-char)
+      (insert ":"))))
+
+(defun esk-paredit-nonlisp ()
+  "Turn on paredit mode for non-lisps."
+  (interactive)
+  (set (make-local-variable paredit-space-delimiter-chars) (list ?\"))
+  (paredit-mode +1))
+
+
+(defun window-half-height ()
+  (max 1 (/ (1- (window-height (selected-window))) 10)))
+
+(defun scroll-up-half ()
+  (interactive)
+  (scroll-up (window-half-height)))
+
+(defun scroll-down-half ()
+  (interactive)
+  (scroll-down (window-half-height)))
+
+
 
 (provide 'defuns)

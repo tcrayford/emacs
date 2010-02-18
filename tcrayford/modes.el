@@ -9,21 +9,23 @@
 (yas/global-mode t)
 (yas/minor-mode t)
 (vendor 'thingatp)
+
 (yas/minor-mode t)
 (textmate-mode t)
 (smart-tab-mode t)
 
-;;ack
+;; ack
 (autoload 'ack-same "full-ack" nil t)
 (autoload 'ack "full-ack" nil t)
 (autoload 'ack-find-same-file "full-ack" nil t)
 (autoload 'ack-find-file "full-ack" nil t)
 
-;;clojure
+;; clojure
 (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
 
 (add-to-list 'load-path "~/.emacs.d/vendor/")
 (add-hook 'slime-load-hook (lambda () (require 'slime-company)))
+(add-hook 'clojure-mode-hook (lambda () (require 'slime-company)))
 
 (vendor 'dot-mode)
 (dot-mode-on)
@@ -55,5 +57,10 @@
 (global-set-key "\C-x\C-d" 'dired)
 
 
+(defun esk-paredit-nonlisp ()
+  "Turn on paredit mode for non-lisps."
+  (interactive)
+  (set (make-local-variable paredit-space-delimiter-chars) (list ?\"))
+  (paredit-mode +1))
 
 (provide 'modes)

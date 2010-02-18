@@ -8,15 +8,15 @@
 
 (setq next-line-add-newlines nil)
 
-                                        ;save history on exit
+;;save history on exit
 (setq eshell-save-history-on-exit t)
 
-                                        ; disable backup files (foo~)
+;; disable backup files (foo~)
 (setq backup-inhibited t)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-                                        ; save minibuffer history
+;; save minibuffer history
 (setq savehist-file "~/.emacs.d/.savehist")
 
 (delete-selection-mode t)
@@ -27,7 +27,7 @@
 
 (global-auto-revert-mode 1)
 
-                                        ; disable auto-save files
+;; disable auto-save files
 (setq auto-save-default nil)
 
 (defadvice kill-ring-save (before slick-copy activate compile)

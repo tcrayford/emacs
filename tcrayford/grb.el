@@ -3,11 +3,11 @@
 ;; David Zhou
 ;;
 ;; The IR_Black theme is originally from:
-;;    
+;;
 ;; http://blog.infinitered.com/entries/show/8
-;;    
+;;
 ;; This theme needs color-theme.
-;;    
+;;
 ;; To use, put this in your init files:
 ;;
 ;; (require 'color-theme)
@@ -20,7 +20,7 @@
   (interactive)
   (color-theme-install
    '(color-theme-grb
-     ((background-color . "#101010")
+     ((background-color . "#121010")
       (background-mode . dark)
       (border-color . "#454545")
       (cursor-color . "white")
@@ -29,7 +29,7 @@
      (default ((t (:background "#000000" :foreground "#F6F3E8"))))
      (vertical-border ((t (:background "#303030"))))
      (fringe ((t (:background "#101010" :foreground "#F6F3E8"))))
-     
+
      (blue ((t (:foreground "blue"))))
      (border-glyph ((t (nil))))
      (buffers-tab ((t (:background "#141414" :foreground "#CACACA"))))
@@ -44,7 +44,7 @@
      (show-paren-match-face ((t (:foreground "black" :background "#aaaacc"))))
      (font-lock-regexp-grouping-backslash ((t (:foreground "#E9C062"))))
      (font-lock-regexp-grouping-construct ((t (:foreground "red"))))
-     
+
      (linum ((t (:background "#000000" :foreground "#666666"))))
 
      (minibuffer-prompt ((t (:foreground "#6699CC"))))
@@ -52,17 +52,17 @@
      (ido-first-match ((t (:foreground "#8F9D6A"))))
      (ido-only-match ((t (:foreground "#8F9D6A"))))
      (mumamo-background-chunk-submode ((t (:background "#222222"))))
-     
+
      (font-lock-string-face ((t (:foreground "#A8FF60"))))
      (font-lock-type-face ((t (:foreground "#FFFFB6"))))
      (font-lock-variable-name-face ((t (:foreground "#C6C5FE"))))
      (font-lock-warning-face ((t (:background "#CC1503" :foreground "#FFFFFF"))))
      (gui-element ((t (:background "#D4D0C8" :foreground "black"))))
      (region ((t (:background "#3f4e6e"))))
-     (mode-line ((t (:background "#a0a0a0" :foreground "black"))))
-     (modeline-inactive ((t (:background "#303030" :foreground "black"))))
-     (modeline-buffer-id ((t (:background "#a0a0a0" :foreground
-                                          "black"))))
+     (mode-line ((t (:background "#3c3c3c" :foreground "#777777"))))
+     (modeline-inactive ((t (:background "#262626" :foreground "black"))))
+     (modeline-buffer-id ((t (:background "#3c3c3c" :foreground
+                                          "#dddddd"))))
      (highlight ((t (:background "#181818"))))
      (highline-face ((t (:background "SeaGreen"))))
      (left-margin ((t (nil))))
@@ -83,8 +83,8 @@
      (diff-removed ((t (:background "#420E09" :foreground "#F8F8F8"))))
      (diff-content ((t nil)))
      (diff-header ((t (:background "#0E2231" :foreground "#F8F8F8"))))
-     
-     
+
+
      ;; nxml
      (nxml-delimiter ((t (:foreground "#96CBFE"))))
      (nxml-name ((t (:foreground "#96CBFE"))))

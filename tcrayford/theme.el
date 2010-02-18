@@ -7,10 +7,10 @@
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\M-W" 'kill-region)
 
-(defface hl-line '((t (:background "#ffffff")))
+(defface hl-line '((t (:background "black")))
   "Face to use for `hl-line-face'." :group 'hl-line)
 (setq hl-line-face 'hl-line)
-(setq hl-line-face '((t (:background "#ffffff"))))
+
 
 (global-hl-line-mode t)
 

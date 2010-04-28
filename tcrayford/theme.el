@@ -15,7 +15,7 @@
 (global-hl-line-mode t)
 
 (set-default-font
- "-apple-inconsolata-medium-r-normal--14-140-72-72-m-140-iso10646-1")
+ "-apple-inconsolata-medium-r-normal--16-140-72-72-m-140-iso10646-1")
 
 (blink-cursor-mode t)
 (setq mac-allow-anti-aliasing t)

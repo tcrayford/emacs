@@ -2,6 +2,11 @@
 (vendor 'browse-kill-ring)
 (vendor 'mo-git-blame)
 (vendor 'smooth-scrolling)
+(vendor 'ioke-mode)
+(vendor 'inf-ioke)
+(setq ioke-program-name "/Users/tcrayford/.bin/ioke-files/bin/ioke")
+(require 'inf-ioke)
+
 (require 'smooth-scrolling)
 (require 'fastnav)
 (require 'browse-kill-ring+)
@@ -12,7 +17,12 @@
 
 (yas/minor-mode t)
 (textmate-mode t)
+(vendor 'peepopen)
+(require 'peepopen)
 (smart-tab-mode t)
+
+(vendor 'vimpulse)
+(require 'vimpulse)
 
 ;; ack
 (autoload 'ack-same "full-ack" nil t)

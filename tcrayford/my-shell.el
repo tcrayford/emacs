@@ -6,9 +6,9 @@
 ; Set a counter to ensure buffer name uniqueness
 (defvar eshell-buffer-count 0)
 
-(setq path "/bin:/usr/bin/:/usr/local/git/bin/")
+(setq path "/bin:/usr/bin/:/usr/local/git/bin/:/Users/tcrayford/.bin/")
 (setenv "PATH" path)
-(setq exec-path '("/usr/local/git/bin/" "/bin/" "/usr/bin/"))
+(setq exec-path '("/usr/local/git/bin/" "/bin/" "/usr/bin/" "/Users/tcrayford/.bin/"))
 
 (defun eshell-exotic-prompt-function ()
   "Set the buffer title as well as the prompt."

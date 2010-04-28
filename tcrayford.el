@@ -10,12 +10,12 @@
 (add-to-list 'load-path "~/.emacs.d")
 (add-to-list 'load-path "~/.emacs.d/vendor")
 
+(require 'modes)
 (require 'current-buffer-tweaks)
 (require 'bindings)
 (require 'editing)
 (require 'theme)
 (require 'my-shell)
-(require 'modes)
 (require 'auto-modes)
 
 ;;(eshell)

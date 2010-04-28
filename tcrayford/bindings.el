@@ -6,7 +6,7 @@
 (global-set-key (kbd "M-v") 'yank)
 (global-set-key (kbd "M-c") 'kill-ring-save)
 (global-set-key (kbd "M-s") 'save-buffer)
-(define-key paredit-mode-map (kbd "M-s") 'save-buffer)
+
 
 (global-set-key (kbd "M-s-h") 'enlarge-window-horizontally)
 (global-set-key (kbd "M-s-l") 'shrink-window-horizontally)

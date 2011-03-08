@@ -3,7 +3,6 @@
   (end-of-line)
   (insert "\n"))
 
-
 ;;TODO write swap-window forwards, and swap window-backwards
 (defun swap-windows ()
   "If you have 2 windows, it swaps them."
@@ -21,13 +20,10 @@
            (set-window-start w1 s2)
            (set-window-start w2 s1)))))
 
-
 ;;Taken from http://github.com/defunkt/emacs/
 (defun tcrayford-ido-find-config ()
   (interactive)
-  (find-file
-   (concat "~/.emacs.d/tcrayford/" (ido-completing-read "Config file: "
-                                                        (directory-files "~/.emacs.d/tcrayford/" nil "^[^.]")))))
+  (ido-find-file-in-dir "~/.emacs.d/tcrayford"))
 
 (defun tcrayford-ido-find-project ()
   (interactive)
@@ -48,25 +44,27 @@
 (defun hallway-test-buffer-for-imp ()
   (interactive)
   (or
-   (find-buffer-visiting (format "%stest/%s-test.clj"
-                                 (locate-dominating-file (buffer-file-name) "src/")
-                                 (file-name-nondirectory (file-name-sans-extension (buffer-file-name)))))
-   (find-buffer-visiting (format "%stest/%s_test.clj"
-                                 (locate-dominating-file (buffer-file-name) "src/")
-                                 (file-name-nondirectory (file-name-sans-extension (buffer-file-name)))))))
+   (find-buffer-visiting
+    (format "%stest/%s-test.clj"
+            (locate-dominating-file (buffer-file-name) "src/")
+            (file-name-nondirectory (file-name-sans-extension (buffer-file-name)))))
+   (find-buffer-visiting
+    (format "%stest/%s_test.clj"
+            (locate-dominating-file (buffer-file-name) "src/")
+            (file-name-nondirectory (file-name-sans-extension (buffer-file-name)))))))
+
+(defun lazytest-buffer? ()
+  (save-excursion
+    (save-window-excursion
+      (goto-char (point-min))
+      (if (search-forward "lazytest" nil t)
+        t nil))))
 
 (defun hallway-run-tests ()
   (interactive)
-  (if (string-match "test" (buffer-file-name))
-      (progn
-        (save-buffer)
-        (clojure-test-run-tests))
-    (let ((test-buffer (hallway-test-buffer-for-imp)))
-      (slime-eval-buffer)
-      (save-buffer)
-      (with-current-buffer test-buffer
-        (save-buffer)
-        (clojure-test-run-tests)))))
+  (progn
+    (save-buffer)
+    (clojure-test-run-tests)))
 
 (defun vendor (library)
   (let* ((file (symbol-name library))
@@ -132,23 +130,11 @@
         (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
         (isearch-forward regexp-p no-recursive-edit)))))
 
-(require 'thingatpt)
-
-;; TODO: this doesn't work
-(defun toggle-symbol-keyword ()
-  (interactive)
-  (save-excursion
-    (backward-word)
-    (if (= (char-at-point) ":")
-        (delete-char)
-      (insert ":"))))
-
 (defun esk-paredit-nonlisp ()
   "Turn on paredit mode for non-lisps."
   (interactive)
   (set (make-local-variable paredit-space-delimiter-chars) (list ?\"))
   (paredit-mode +1))
-
 
 (defun window-half-height ()
   (max 1 (/ (1- (window-height (selected-window))) 10)))
@@ -161,6 +147,9 @@
   (interactive)
   (scroll-down (window-half-height)))
 
-
+(defun fontify-if ()
+  (interactive)
+  (font-lock-add-keywords nil
+                          '(((regexp-opt "if" "cond") 1 font-lock-warning-face t))))
 
 (provide 'defuns)

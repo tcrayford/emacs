@@ -2918,7 +2918,7 @@ binding, use `vimpulse-omap'."
     ("close" (delete-window))
     ("on" "only")
     ("only" (delete-other-windows))
-    ("quit" (save-buffers-kill-emacs))
+    ("quit" (delete-window))
     ("split" (split-window))
     ("syntax" (global-font-lock-mode))
     ;; Emacs and Vim use inverted naming conventions for splits

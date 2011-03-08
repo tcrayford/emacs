@@ -12,7 +12,6 @@
                (set-buffer-modified-p nil)))))) ;;
 
 ;; Never understood why Emacs doesn't have this function, either.
-;;
 
 (defun move-buffer-file (dir)
   "Moves both current buffer and file it's visiting to DIR." (interactive "DNew directory: ")

@@ -1,13 +1,19 @@
 (setq semanticdb-default-save-directory "~/.semantic")
 (setq show-trailing-whitespace (not buffer-read-only))
+
+;; encoding
 (prefer-coding-system 'utf-8)
 (set-language-environment 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 
+(setq delete-by-moving-to-trash t)
 (setq next-line-add-newlines nil)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;;No bell
+(setq ring-bell-function 'ignore)
 ;;save history on exit
 (setq eshell-save-history-on-exit t)
 
@@ -23,9 +29,15 @@
 
 (setq next-line-add-newlines nil)
 
-(setq delete-by-moving-to-trash t)
-
 (global-auto-revert-mode 1)
+
+; line numbering
+(require 'linum)
+(setq linum-format " %d ") ; space after line number
+
+;; smooth scrolling
+(require 'centered-cursor-mode)
+(global-centered-cursor-mode t)
 
 ;; disable auto-save files
 (setq auto-save-default nil)
@@ -47,6 +59,21 @@
 
 (defalias 'qrr 'query-replace-regexp)
 (defalias 'qr 'query-replace)
+
+; save cursor position within files
+(require 'saveplace)
+(setq save-place-file "~/.emacs.d/.saveplace")
+(setq-default save-place t)
+(setq ns-pop-up-frames nil)
+
+; encoding
+(prefer-coding-system 'utf-8)
+(set-language-environment 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+
+;; all hippie expand fns
 (setq hippie-expand-try-functions-list
       '(yas/hippie-try-expand
         try-expand-dabbrev
@@ -61,8 +88,11 @@
         try-expand-line-all-buffers
         try-expand-list
         try-expand-list-all-buffers
-        try-expand-whole-kill
-        ))
+        try-expand-whole-kill))
 
-(setq ns-pop-up-frames nil)
+(global-linum-mode t)
+
+(eval-after-load 'clojure-mode
+  '(define-clojure-indent (describe 'defun) (it 'defun)))
+
 (provide 'editing)

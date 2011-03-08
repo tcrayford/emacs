@@ -6,6 +6,7 @@
 (vendor 'inf-ioke)
 (setq ioke-program-name "/Users/tcrayford/.bin/ioke-files/bin/ioke")
 (require 'inf-ioke)
+(require 'rainbow-mode)
 
 (require 'smooth-scrolling)
 (require 'fastnav)
@@ -23,6 +24,11 @@
 
 (vendor 'vimpulse)
 (require 'vimpulse)
+
+(require 'clojure-mode)
+(add-to-list 'load-path "~/.emacs.d/vendor/midje/emacs")
+(require 'midje-mode)
+
 
 ;; ack
 (autoload 'ack-same "full-ack" nil t)
@@ -72,5 +78,16 @@
   (interactive)
   (set (make-local-variable paredit-space-delimiter-chars) (list ?\"))
   (paredit-mode +1))
+
+;; Autocomplete
+
+(add-to-list 'load-path "~/.emacs.d/vendor")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/vendor/ac-dict")
+(ac-config-default)
+
+(require 'ac-slime)
+
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
 
 (provide 'modes)

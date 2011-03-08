@@ -20,7 +20,7 @@
   (interactive)
   (color-theme-install
    '(color-theme-grb
-     ((background-color . "#121010")
+     ((background-color . "black")
       (background-mode . dark)
       (border-color . "#454545")
       (cursor-color . "white")
@@ -45,7 +45,7 @@
      (font-lock-regexp-grouping-backslash ((t (:foreground "#E9C062"))))
      (font-lock-regexp-grouping-construct ((t (:foreground "red"))))
 
-     (linum ((t (:background "#000000" :foreground "#666666"))))
+     (linum ((t (:background "#1f1f1f" :foreground "#666666"))))
 
      (minibuffer-prompt ((t (:foreground "#6699CC"))))
      (ido-subdir ((t (:foreground "#CF6A4C"))))
@@ -56,7 +56,7 @@
      (font-lock-string-face ((t (:foreground "#A8FF60"))))
      (font-lock-type-face ((t (:foreground "#FFFFB6"))))
      (font-lock-variable-name-face ((t (:foreground "#C6C5FE"))))
-     (font-lock-warning-face ((t (:background "#CC1503" :foreground "#FFFFFF"))))
+     (font-lock-warning-face ((t (:foreground "orange" :underline t))))
      (gui-element ((t (:background "#D4D0C8" :foreground "black"))))
      (region ((t (:background "#3f4e6e"))))
      (mode-line ((t (:background "#3c3c3c" :foreground "#777777"))))
@@ -83,7 +83,6 @@
      (diff-removed ((t (:background "#420E09" :foreground "#F8F8F8"))))
      (diff-content ((t nil)))
      (diff-header ((t (:background "#0E2231" :foreground "#F8F8F8"))))
-
 
      ;; nxml
      (nxml-delimiter ((t (:foreground "#96CBFE"))))
